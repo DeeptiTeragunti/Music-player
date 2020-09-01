@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset=" UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link rel="stylesheet" href="css/styles.css" />
+    <title>Music Player App</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.1.0-10/css/all.css"
+      integrity="sha512-Dj9pt3sZROOuTTs9S89ykGZeu1XQgWKg3DVpu5tZALApsrWdd3tnVjTclUuVONaHM4O8GgCnjSbHlTKXrd2OWg=="
+      crossorigin="anonymous"
+    />
+  </head>
+
+  <body>
+    <div class="main_div">
+      <div class="music_container">
+        <h2 id="title">AFTER HOURS</h2>
+        <h3 id="artist">The Weeknd</h3>
+        <div class="image_container">
+          <img src="images/thapa-0.jpg" alt="" />
+        </div>
+        <audio src="music/thapa-0.mp3"></audio>
+        <!--controls--->
+
+        <div class="music_controls">
+          <i class="fas fa-backward" id="prev" title="Previous"></i>
+          <i class="fas fa-play main_button" id="play" tilte="Play"></i>
+          <i class="fas fa-forward" id="next" title="Next"></i>
+        </div>
+      </div>
+    </div>
+    <script>
+      const music = document.querySelector("audio");
+      const img = document.querySelector("img");
+      const play = document.getElementById("play");
+      const artist = document.getElementById("artist");
+      const title = document.getElementById("title");
+      const prev = document.getElementById("prev");
+      const next = document.getElementById("next");
+
+      const songs = [
+        {
+          name: "thapa-0",
+          title: "AFTER HOURS",
+          artist: "The Weeknd",
+        },
+        {
+          name: "thapa-1",
+          title: "Cradles",
+          artist: "Sub urban",
+        },
+        {
+          name: "thapa-2",
+          title: "Roses",
+          artist: "Imanbek-Remix",
+        },
+      ];
+
+      let isplaying = false;
+      //for play
+      const playmusic = () => {
+        isplaying = true;
+        music.play();
+
+        play.classList.replace("fa-play", "fa-pause");
+        img.classList.add("anime");
+      };
+      //for pause
+      const pausemusic = () => {
+        isplaying = false;
+        music.pause();
+
+        play.classList.replace("fa-pause", "fa-play");
+        img.classList.remove("anime");
+      };
+
+      play.addEventListener("click", () => {
+        // if (isplaying) {
+        //  pausemusic();
+        //} else {
+        //  playmusic();
+        // }//
+
+        isplaying ? pausemusic() : playmusic();
+      });
+
+      //change data
+      const loadSong = (songs) => {
+        title.textContent = songs.title;
+        artist.textContent = songs.artist;
+        music.src = "music/" + songs.name + ".mp3";
+        img.src = "images/" + songs.name + ".jpg";
+      };
+
+      songindex = 0;
+
+      //loadSong(songs[2]);
+      const nextSong = () => {
+        songindex = (songindex + 1) % songs.length;
+        loadSong(songs[songindex]);
+        playmusic();
+      };
+      const prevSong = () => {
+        songindex = (songindex - 1 + songs.length) % songs.length;
+        loadSong(songs[songindex]);
+        playmusic();
+      };
+
+      next.addEventListener("click", nextSong);
+      prev.addEventListener("click", prevSong);
+    </script>
+  </body>
+</html>
