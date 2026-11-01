@@ -41,6 +41,8 @@ HELP = """Commands:
 !where                - show current folder, model, mode, session
 Any other message goes to Claude Code."""
 
+COMMAND_WORDS = {"help", "status", "log", "diff", "shell", "new", "stop", "model", "mode", "cwd", "where"}
+
 lock = asyncio.Lock()
 has_session = False
 current_proc = None
@@ -111,6 +113,9 @@ async def on_message(message):
     text = message.content.strip()
     if not text:
         return
+    # Accept /status as well as !status; only known command words are rewritten.
+    if text.startswith("/") and text.split()[0][1:] in COMMAND_WORDS:
+        text = "!" + text[1:]
     channel = message.channel
 
     if text == "!help":
