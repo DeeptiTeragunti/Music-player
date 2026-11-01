@@ -130,7 +130,12 @@ async def on_message(message):
         has_session = False
         await channel.send("Next message starts a fresh Claude Code conversation.")
     elif text == "!status":
-        await reply_all(channel, await run_command(["git", "status", "--short"]))
+        info = (
+            f"Folder: {PROJECT_DIR}\nModel: {model or 'default'}\nMode: {mode}\n"
+            f"Continuing conversation: {has_session}\n\nGit:\n"
+            + await run_command(["git", "status", "--short"])
+        )
+        await reply_all(channel, info)
     elif text == "!log":
         await reply_all(channel, await run_command(["git", "log", "--oneline", "-10"]))
     elif text == "!diff":
